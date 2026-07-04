@@ -65,11 +65,10 @@ const ClientSchema: Schema = new Schema(
                 minLength: 2,
                 maxLength: 2
             }
-        }   
+        },
+        deleteAt: { type: Date, default: null }   
     },
-    {
-        timestamps: true
-    }
+    { timestamps: true }
 );
 
 // Exportando o modelo já tipado
