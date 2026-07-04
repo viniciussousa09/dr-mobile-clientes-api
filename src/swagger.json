@@ -1,0 +1,127 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "DR. MOBILE - API de Clientes",
+        "description": "API RESTful para cadastro e gerenciamento de clientes.",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:3000",
+            "description": "Servidor de Desenvolvimento"
+        }
+    ],
+    "paths": {
+        "/clientes": {
+            "post": {
+                "summary": "Cadastre um novo cliente",
+                "tags": ["Clientes"],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": { "$ref": "#/components/schemas/ClientInput" }
+                        }
+                    }
+                },
+                "reponses": {
+                    "201": { "description": "Cliente criado com sucesso!" },
+                    "400": { "description": "Erro de validação!" },
+                    "409": { "description": "Conflito: CPF ou E-mail já cadastrado!" }
+                }
+            },
+            "get": {
+                "summary": "Lista todos os clientes.",
+                "tags": ["Clientes"],
+                "parameters": [
+                    { "in": "query", "name": "page", "schema": { "type": "integer" }, "description": "Página atual" },
+                    { "in": "query", "name": "limit", "schema": { "type": "integer" }, "description": "Itens por página" },
+                    { "in": "query", "name": "nome", "schema": { "type": "string" }, "description": "Filtrar por nome" },
+                    { "in": "query", "name": "ativo", "schema": { "type": "boolean" }, "description": "Filtrar por status" }
+                ],
+                "responses": {
+                    "200": { "description": "Lista paginada de clientes" }
+                }
+            }
+        },
+        "/clientes/{id}": {
+            "get": {
+                "summary": "Busca um cliente por ID",
+                "tags": ["Clientes"],
+                "parameters": [
+                    { "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }
+                ],
+                "responses": {
+                    "200": { "description": "Dados do cliente" },
+                    "404": { "description": "Cliente não encontrado" }
+                }
+            },
+            "patch": {
+                "summary": "Atualiza dados do cliente (Exceto CPF).",
+                "tags": ["Clientes"],
+                "parameters": [
+                    { "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": { "$ref": "#/components/schemas/ClientInput" }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": { "description": "Cliente atualizado com sucesso" },
+                    "400": { "description": "Tentativa de alteração de CPF ou erro de validação" },
+                    "404": { "description": "Cliente não encontrado" }
+                }
+            },
+            "delete": {
+                "summary": "Exclusão lógica do cliente",
+                "tags": ["Clientes"],
+                "parameters": [
+                    { "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }
+                ],
+                "responses": {
+                    "204": { "description": "Cliente excluído com sucesso." },
+                    "404": { "description": "Cliente não encontrado." }
+                }
+            }
+        },
+        "/health": {
+            "get": {
+                "summary": "Verifica a saúde da API",
+                "tags": ["Sistema"],
+                "responses": {
+                    "200": { "description": "servidor online e operante" }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ClientInput":{
+                "type": "object",
+                "properties": {
+                    "nome": { "type": "string", "example": "João da Silva" },
+                    "cpf": { "type": "string", "example": "526.982.247-25" },
+                    "email": { "type": "string", "example": "joao@email.com"  },
+                    "telefone": { "type": "string", "example": "(11) 99999-9999" },
+                    "dataNascimento": { "type": "string", "format": "date", "example": "1995-05-10" },
+                    "ativo": { "type": "boolean", "example": "true" },
+                    "endereco": {
+                        "type": "object",
+                        "properties": {
+                            "cep": { "type": "string", "example": "01001-000" },
+              "logradouro": { "type": "string", "example": "Praça da Sé" },
+              "numero": { "type": "string", "example": "100" },
+              "complemento": { "type": "string", "example": "Apto 10" },
+              "bairro": { "type": "string", "example": "Sé" },
+              "cidade": { "type": "string", "example": "São Paulo" },
+              "estado": { "type": "string", "example": "SP" }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

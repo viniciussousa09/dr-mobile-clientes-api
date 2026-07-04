@@ -1,0 +1,155 @@
+{
+    "info": {
+        "name": "DR. MOBILE - Clientes API",
+        "description": "Collection de testes para o desafio técnico do time de sustentação.",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "1. Cadastrar Cliente Valido",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test(\"Status code deve ser 201 Created\", function () {",
+                            "    pm.response.to.have.status(201);",
+                            "});",
+                            "",
+                            "if (pm.response.code === 201) {",
+                            "    const response = pm.response.json();",
+                            "    pm.test(\"Deve possuir um ID válido\", function() {",
+                            "        pm.expect(response).to.have.property('_id');",
+                            "    });",
+                            "    // Salva o ID na variável de ambiente para as próximas rotas",
+                            "    pm.environment.set(\"clienteId\", response._id);",
+                            "}"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
+            "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"nome\": \"João da Silva\",\n  \"cpf\": \"529.982.247-25\",\n  \"email\": \"joao@email.com\",\n  \"telefone\": \"(11) 99999-9999\",\n  \"dataNascimento\": \"1995-05-10\",\n  \"ativo\": true,\n  \"endereco\": {\n    \"cep\": \"01001-000\",\n    \"logradouro\": \"Praça da Sé\",\n    \"numero\": \"100\",\n    \"bairro\": \"Sé\",\n    \"cidade\": \"São Paulo\",\n    \"estado\": \"sp\"\n  }\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "{{baseUrl}}/clientes",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "clientes"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "2. Listar Clientes",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test(\"Status code deve ser 200 OK\", function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});",
+                            "pm.test(\"Resposta deve conter paginação\", function () {",
+                            "    const response = pm.response.json();",
+                            "    pm.expect(response).to.have.property('data');",
+                            "    pm.expect(response).to.have.property('total');",
+                            "});"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/clientes?page=1&limit=10",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "clientes"
+                    ],
+                    "query": [
+                        {
+                            "key": "page",
+                            "value": "1"
+                        },
+                        {
+                            "key": "limit",
+                            "value": "10"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "3. Buscar Cliente por ID",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test(\"Status code deve ser 200 OK\", function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/clientes/{{clienteId}}",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "clientes",
+                        "clienteId"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "4. Excluir Cliente.",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test(\"Status code deve ser 204 No Content\", function () {",
+                            "    pm.response.to.have.status(204);",
+                            "});"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
+            "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/clientes/{{clienteId}}",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["clientes", "{{clienteId}}"]
+                }
+            }
+        }
+    ]
+}
