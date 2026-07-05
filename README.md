@@ -33,9 +33,9 @@ O projeto foi construído inspirado nos conceitos de **Clean Architecture** e **
 
 1. Clone o repositório:
 ```bash
-git clone https://github.com/seu-usuario/dr-mobile-clientes-api.git
+git clone https://github.com/viniciussousa09/dr-mobile-clientes-api
 
-2. Instale as dependências:
+2. Instale as dependências:git
 npm install
 
 3. Configure as variáveis de ambiente. Crie um arquivo .env na raiz do projeto e adicione sua string de conexão:
