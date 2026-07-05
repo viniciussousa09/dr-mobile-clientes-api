@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+api:
+  build:
+  container_name: dr_mobile_clientes_api
+  ports:
+    - "3000:3000"
+  environment:
+  # O compose vai puxar a variável do arquivo .env local e jogar para o container
+    - PORT=3000
+    - MONGODB_URI=${MONGODB_URI}
+  restart: unless-stopped
